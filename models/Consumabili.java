@@ -5,8 +5,8 @@ public class Consumabili extends Prodotto {
     private String scadenza;
     private String categoria;
 
-    public Consumabili(String nome, String descrizione, String prezzo, String scadenza, String categoria) {
-        super(nome, descrizione, prezzo);
+    public Consumabili(String nome, int quantita, double prezzo, String scadenza, String categoria) {
+        super(nome, quantita, prezzo);
         this.scadenza = scadenza;
         this.categoria = categoria;
     }
