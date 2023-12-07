@@ -10,3 +10,9 @@ l'utente accede ad un negozio, vede i suoi item, sceglie se comprare un Item o t
 e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che ha comprato). */
 
 
+//Negozio = array di Item 
+//Nome del negozio = nome dell'array
+//Item = classe astratta
+//Servizi, Oggetti, Consumabili = classi di Item con aggiuntivi attributi
+//Utente = oggetto;
+
