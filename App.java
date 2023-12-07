@@ -8,3 +8,5 @@ L'utente ha un credito iniziale di 200$ e ogni volta che decide di comprare un I
 paga la somma necessaria a compare 1x Item selezionato. Ricapitolando, 
 l'utente accede ad un negozio, vede i suoi item, sceglie se comprare un Item o tornare indietro, 
 e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che ha comprato). */
+
+
