@@ -16,14 +16,26 @@ import models.*;
 public class UIManager {
     Scanner sc = new Scanner(System.in);
 
-    public void menu() {
+    public String menuCliente() {
+        System.out.println("""
+        Inserisci il nome del cliente: 
+                """);
+        return sc.nextLine();
+    }
+    public int menuNegozio() {
         System.out.println("""
                         ---MENU---
         1)Negozio 1     2)Negozio 2     3)Negozio 3     
-        
-                
                 """);
-
+        return sc.nextInt();
     }
+
+    public void menuItems() {
+        System.out.println("""
+                        ---MENU---
+            1)Item 1     2)Item 2     3)Item 3     
+                """);
+    }
+
 
 }

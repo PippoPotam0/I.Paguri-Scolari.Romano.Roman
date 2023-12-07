@@ -11,9 +11,22 @@ e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che 
 
 
 //Negozio = array di Item 
-//Piu negozio = piu array di Item
+//Piu negozi = piu array di Item
 //Nome del negozio = nome dell'array
 //Item = classe astratta
 //Servizi, Oggetti, Consumabili = classi di Item con aggiuntivi attributi
 //Utente = oggetto;
+import ui.UIManager;
 
+
+
+public class App{
+    public static void main(String[] args) {
+        
+        
+        public List<Item> negozio1 = new List<>();
+        public List<Item> negozio2 = new List<>();
+        public List<Item> negozio3 = new List<>();
+
+    }
+}

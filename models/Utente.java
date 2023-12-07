@@ -9,9 +9,9 @@ public class Utente{
     private double credito;
     private List<Item> prodottiAcquistati;
 
-        Utente(String nome, double credito) {
+        Utente(String nome) {
             this.nome = nome;
-            this.credito = credito;
+            this.credito = 200;
             this.prodottiAcquistati = new ArrayList<>();
         }
 
