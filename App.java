@@ -11,6 +11,7 @@ e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che 
 
 
 //Negozio = array di Item 
+//Piu negozio = piu array di Item
 //Nome del negozio = nome dell'array
 //Item = classe astratta
 //Servizi, Oggetti, Consumabili = classi di Item con aggiuntivi attributi
