@@ -16,10 +16,7 @@ e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che 
 //Item = classe astratta
 //Servizi, Oggetti, Consumabili = classi di Item con aggiuntivi attributi
 //Utente = oggetto;
-import java.util.ArrayList;
-import java.util.List;
 import ui.UIManager;
-import models.*;
 
 public class App extends UIManager {
     public static void main(String[] args) {
