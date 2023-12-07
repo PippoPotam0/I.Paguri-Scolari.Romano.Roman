@@ -7,4 +7,17 @@ public class Servizi extends Prodotto {
         super(nome, quantita, prezzo);
         this.tempoPrestazione = tempoPrestazione;
     }
+
+    public String getTempoPrestazione() {
+        return tempoPrestazione;
+    }
+    
+    public void setTempoPrestazione(String tempoPrestazione) {
+        this.tempoPrestazione = tempoPrestazione;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Tempo di prestazione: " + tempoPrestazione;
+    }
 }

@@ -9,21 +9,47 @@ paga la somma necessaria a compare 1x Item selezionato.
 Ricapitolando, l'utente accede ad un negozio, vede i suoi item, sceglie se comprare un Item o tornare indietro, 
 e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che ha comprato). */
 
-package ui;
-import java.util.Scanner;
-import models.*;
+package models;
 
-public class UIManager {
-    Scanner sc = new Scanner(System.in);
+    abstract class Prodotto{
 
-    public void menu() {
-        System.out.println("""
-                        ---MENU---
-        1)Negozio 1     2)Negozio 2     3)Negozio 3     
-        
-                
-                """);
+    private String nome;
+    private int quantita;
+    private double prezzo; 
 
+    public Prodotto(String nome, int quantita, double prezzo){
+        this.nome = nome;
+        this.quantita = quantita;
+        prezzo = this.prezzo;
     }
+
+    @Override
+    public String toString(){
+        return "Nome: " + nome + "Quantità: " + quantita + "Prezzo: " + prezzo;
+    }
+
+    public String getNome(){  
+        return  nome; 
+    } 
+
+    public int getQuantita(){
+        return quantita;
+    }   
+
+    public double getPrezzo(){
+        return prezzo;
+    }       
+
+    public void setNome(String nome){
+        this.nome = nome;
+    }       
+
+    public void setQuantita(int quantita){
+        this.quantita = quantita;
+    }       
+
+    public void setPrezzo(double prezzo){
+        this.prezzo = prezzo;
+    }      
 
 }
