@@ -1,7 +1,5 @@
 package models;
 
-
-
 public abstract class Prodotto{
 
     private String nome;
