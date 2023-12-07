@@ -1,6 +1,6 @@
 package models;
 
-public class Consumabili extends Prodotto {
+public class Consumabili extends Item {
     
     private String scadenza;
     private String categoria;

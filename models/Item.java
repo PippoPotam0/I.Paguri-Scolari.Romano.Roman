@@ -11,13 +11,13 @@ e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che 
 
 package models;
 
-    abstract class Prodotto{
+    abstract class Item{
 
     private String nome;
     private int quantita;
     private double prezzo; 
 
-    public Prodotto(String nome, int quantita, double prezzo){
+    public Item(String nome, int quantita, double prezzo){
         this.nome = nome;
         this.quantita = quantita;
         prezzo = this.prezzo;

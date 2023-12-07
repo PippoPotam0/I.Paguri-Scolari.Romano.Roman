@@ -1,8 +1,8 @@
 package models;
 
-public class Oggetti extends Prodotto {
-    public String garanzia;
-    public String categoria;
+public class Oggetti extends Item {
+    private String garanzia;
+    private String categoria;
 
     public Oggetti(String nome, int quantita, double prezzo, String garanzia, String categoria) {
         super(nome, quantita, prezzo);

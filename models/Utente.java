@@ -1,10 +1,13 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utente{
 
     private String nome;
     private double credito;
-    private List<Prodotto> prodottiAcquistati;
+    private List<Item> prodottiAcquistati;
 
         Utente(String nome, double credito) {
             this.nome = nome;
@@ -17,8 +20,8 @@ public class Utente{
             System.out.println("Credito: " + credito +"$");
             System.out.println("Inventario: ");
 
-            for (Prodotto prodotto : prodottiAcquistati) {
-                System.out.println(prodotto.nome);
+            for (Item prodotto : prodottiAcquistati) {
+                System.out.println(prodotto.getNome());
             }
         }
 
