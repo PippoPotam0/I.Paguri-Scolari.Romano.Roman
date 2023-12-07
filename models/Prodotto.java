@@ -1,7 +1,5 @@
 package models;
 
-
-
 public abstract class Prodotto{
 
     private String nome;
@@ -14,6 +12,7 @@ public abstract class Prodotto{
         prezzo = this.prezzo;
     }
 
+    @Override
     public String toString(){
         return "Nome: " + nome + "Quantità: " + quantita + "Prezzo: " + prezzo;
     }
