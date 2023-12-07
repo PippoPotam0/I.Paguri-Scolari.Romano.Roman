@@ -5,8 +5,8 @@ Gli item si dividono in: Servizi (hanno anche un tempo di prestazione)
 Oggetti (hanno un tempo di garanzia ed una categoria (valore che ha dominio TECH, TOOL, FURNITURE) e 
 Consumabili (hanno una data di scadenza ed una categoria (valore con dominio BEVANDE, CIBO).
 L'utente ha un credito iniziale di 200$ e ogni volta che decide di comprare un Item, 
-paga la somma necessaria a compare 1x Item selezionato. Ricapitolando, 
-l'utente accede ad un negozio, vede i suoi item, sceglie se comprare un Item o tornare indietro, 
+paga la somma necessaria a compare 1x Item selezionato. 
+Ricapitolando, l'utente accede ad un negozio, vede i suoi item, sceglie se comprare un Item o tornare indietro, 
 e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che ha comprato). */
 
 
@@ -16,17 +16,18 @@ e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che 
 //Item = classe astratta
 //Servizi, Oggetti, Consumabili = classi di Item con aggiuntivi attributi
 //Utente = oggetto;
+import java.util.ArrayList;
+import java.util.List;
 import ui.UIManager;
+import models.*;
 
-
-
-public class App{
+public class App extends UIManager {
     public static void main(String[] args) {
+
         
-        
-        public List<Item> negozio1 = new List<>();
-        public List<Item> negozio2 = new List<>();
-        public List<Item> negozio3 = new List<>();
+        UIManager uiManager = new UIManager();
+
+		uiManager.run();
 
     }
 }

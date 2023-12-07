@@ -9,21 +9,21 @@ public class Utente{
     private double credito;
     private List<Item> prodottiAcquistati;
 
-        Utente(String nome) {
-            this.nome = nome;
-            this.credito = 200;
-            this.prodottiAcquistati = new ArrayList<>();
-        }
+    public Utente(String nome) {
+        this.nome = nome;
+        this.credito = 200;
+        this.prodottiAcquistati = new ArrayList<>();
+    }
 
-        void visualizzaDashboard() {
-            System.out.println("Benvenuto " + nome);
-            System.out.println("Credito: " + credito +"$");
-            System.out.println("Inventario: ");
+    public void visualizzaDashboard() {
+        System.out.println("Benvenuto " + this.nome);
+        System.out.println("Credito: " + this.credito +"$");
+        System.out.println("Inventario: ");
 
-            for (Item prodotto : prodottiAcquistati) {
-                System.out.println(prodotto.getNome());
-            }
+        for (Item prodotto : prodottiAcquistati) {
+            System.out.println(prodotto.getNome() + " " + prodotto.getPrezzo());
         }
+    }
 
     public String getNome() {
         return nome;

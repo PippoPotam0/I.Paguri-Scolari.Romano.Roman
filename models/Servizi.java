@@ -3,8 +3,8 @@ package models;
 public class Servizi extends Item {
     private String tempoPrestazione;
 
-    public Servizi(String nome, int quantita, double prezzo, String tempoPrestazione) {
-        super(nome, quantita, prezzo);
+    public Servizi(String nome, int quantita, double prezzo, boolean acquistato, String tempoPrestazione) {
+        super(nome, quantita, prezzo, acquistato);
         this.tempoPrestazione = tempoPrestazione;
     }
 

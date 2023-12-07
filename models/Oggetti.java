@@ -4,8 +4,8 @@ public class Oggetti extends Item {
     private String garanzia;
     private String categoria;
 
-    public Oggetti(String nome, int quantita, double prezzo, String garanzia, String categoria) {
-        super(nome, quantita, prezzo);
+    public Oggetti(String nome, int quantita, double prezzo, boolean acquistato, String garanzia, String categoria) {//categoria = TECH, TOOL, FURNITURE, vanno messi come 
+        super(nome, quantita, prezzo, acquistato);                                                                   //unici possibili valori
         this.garanzia = garanzia;
         this.categoria = categoria;
     }

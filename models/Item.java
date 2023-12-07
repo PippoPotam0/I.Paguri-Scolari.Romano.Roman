@@ -11,21 +11,25 @@ e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che 
 
 package models;
 
-    abstract class Item{
+    public abstract class Item{
 
     private String nome;
     private int quantita;
     private double prezzo; 
+    boolean acquistato;
 
-    public Item(String nome, int quantita, double prezzo){
+    public Item(String nome, int quantita, double prezzo, boolean acquistato){
         this.nome = nome;
         this.quantita = quantita;
-        prezzo = this.prezzo;
+        this.prezzo = prezzo;
+        this.acquistato = acquistato;
     }
 
     @Override
     public String toString(){
-        return "Nome: " + nome + "Quantità: " + quantita + "Prezzo: " + prezzo;
+        return "Nome: " + nome + 
+        "Quantità: " + quantita + 
+        "Prezzo: " + prezzo;
     }
 
     public String getNome(){  
