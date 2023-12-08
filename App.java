@@ -25,30 +25,8 @@ import models.Oggetti;
 import models.Item;
 
 public class App extends UIManager {
-          private static List<Negozio> listaNegozi = new ArrayList<>();
+          
     public static void main(String[] args) {
-
-
-        Oggetti oggetto1 = new Oggetti("Oggetto1", 10, 20.0, false, "Garanzia1", "Categoria1");
-        Oggetti oggetto2 = new Oggetti("Oggetto2", 5, 15.0, false, "Garanzia2", "Categoria2");
-        Oggetti oggetto3 = new Oggetti("Oggetto3", 8, 25.0, false, "Garanzia3", "Categoria3");
-
-        List<Item> inventarioNegozio1 = new ArrayList<>();
-        inventarioNegozio1.add(oggetto1);
-        inventarioNegozio1.add(oggetto2);
-
-        // Creare un inventario per il secondo negozio
-        List<Item> inventarioNegozio2 = new ArrayList<>();
-        inventarioNegozio2.add(oggetto3);
-
-        // Creare le istanze dei negozi passando gli inventari
-        Negozio negozio1 = new Negozio(inventarioNegozio1);
-        Negozio negozio2 = new Negozio(inventarioNegozio2);
-
-        // Aggiungere i negozi alla lista
-        listaNegozi.add(negozio1);
-        listaNegozi.add(negozio2);
-
 
         UIManager uiManager = new UIManager();
 

@@ -12,5 +12,6 @@ public class Negozio {
     public List<Item> getInventario() {
         return inventario;
     }
+
 }
 
