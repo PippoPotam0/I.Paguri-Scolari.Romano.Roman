@@ -25,6 +25,10 @@ public class Utente{
         }
     }
 
+    public void aggiungiProdottoAcquistato(Oggetti oggetto) {
+        prodottiAcquistati.add(oggetto);
+    }
+
     public String getNome() {
         return nome;
     }

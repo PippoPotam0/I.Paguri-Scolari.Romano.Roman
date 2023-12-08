@@ -1,21 +1,11 @@
-/*Progettare un'applicazione che gestisce l'inventario di un negozio ed i suoi clienti. 
-Un utente che apre l'applicazione può accedere come cliente inserendo un nome e poi visualizzare una lista di negozi. 
-Ogni negozio ha un inventario di Item. Ogni Item ha un nome, una quantità ed un prezzo. 
-Gli item si dividono in: Servizi (hanno anche un tempo di prestazione) 
-Oggetti (hanno un tempo di garanzia ed una categoria (valore che ha dominio TECH, TOOL, FURNITURE) e 
-Consumabili (hanno una data di scadenza ed una categoria (valore con dominio BEVANDE, CIBO).
-L'utente ha un credito iniziale di 200$ e ogni volta che decide di comprare un Item, 
-paga la somma necessaria a compare 1x Item selezionato. 
-Ricapitolando, l'utente accede ad un negozio, vede i suoi item, sceglie se comprare un Item o tornare indietro, 
-e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che ha comprato). */
-
 package ui;
+
 import java.util.Scanner;
+import java.util.List;
 import models.*;
 
 public class UIManager {
 
-     
     private static Scanner sc;
 
     private final String MENU = """
@@ -24,13 +14,18 @@ public class UIManager {
 
             1)Visualizza Negozi        2)Visualizza Dashboard
 
-            3)Visualizza menu
-
-                        0)Esci dal programma
+            3)Visualizza menu          0)Esci dall'applicazione
             """;
 
     public UIManager() {
         this.sc = new Scanner(System.in);
+    }
+
+    private List<Negozio> listaNegozi; 
+
+    public UIManager(List<Negozio> listaNegozi) {
+        this.sc = new Scanner(System.in);
+        this.listaNegozi = listaNegozi; 
     }
 
     public void printMenu() {
@@ -48,12 +43,69 @@ public class UIManager {
     }
     
     public static String menuCliente() {
-        System.out.println("Inserisci il tuo nome: ");
+        System.out.println("\nBenvenuto/a \nInserisci il tuo nome: ");
         return sc.nextLine();
-
     }
 
-    //List<Item> negozio = new ArrayList<Item>(); Andrebbe teoricamente nella prima opzione del menu insieme a tutto quello che resta da finire
+    public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi) {
+        Negozio negozioCorrente = getNegozio(sceltaNegozio, listaNegozi);
+        if (negozioCorrente != null) {
+            boolean continuaAcquisti = true;
+            do {
+                System.out.println("Inventario del Negozio " + sceltaNegozio);
+    
+                List<Item> inventarioNegozio = negozioCorrente.getInventario();
+                for (int i = 0; i < inventarioNegozio.size(); i++) {
+                    Item item = inventarioNegozio.get(i);
+                    System.out.println((i + 1) + ") " + item.getNome() + " - Prezzo: " + item.getPrezzo());
+                }
+    
+                System.out.println("Credito disponibile: " + user.getCredito());
+                System.out.println("Seleziona un oggetto da acquistare o 0 per tornare al menu principale:");
+    
+                int sceltaOggetto = sc.nextInt();
+                if (sceltaOggetto == 0) {
+                    continuaAcquisti = false;
+                } else {
+                    acquistaOggetto(user, negozioCorrente, sceltaOggetto);
+                }
+            } while (continuaAcquisti);
+        } else {
+            System.err.println("Negozio non trovato");
+        }
+    }
+
+    private static Negozio getNegozio(int numeroNegozio, List<Negozio> listaNegozi) {
+        if (numeroNegozio >= 1 && numeroNegozio <= listaNegozi.size()) {
+            return listaNegozi.get(numeroNegozio - 1); 
+        } else {
+            System.err.println("Numero del negozio non valido");
+            return null;
+        }
+    }
+
+    private static void acquistaOggetto(Utente user, Negozio negozio, int sceltaOggetto) {
+        if (sceltaOggetto >= 1 && sceltaOggetto <= negozio.getInventario().size()) {
+            Item itemScelto = negozio.getInventario().get(sceltaOggetto - 1);
+    
+            if (itemScelto instanceof Oggetti) {
+                Oggetti oggettoScelto = (Oggetti) itemScelto;
+    
+                if (user.getCredito() >= oggettoScelto.getPrezzo() && oggettoScelto.getQuantita() > 0) {
+                    user.aggiungiProdottoAcquistato(oggettoScelto);
+                    user.setCredito(user.getCredito() - oggettoScelto.getPrezzo());
+                    oggettoScelto.setQuantita(oggettoScelto.getQuantita() - 1);
+                    System.out.println("Hai acquistato: " + oggettoScelto.getNome());
+                } else {
+                    System.err.println("Denaro insufficiente o oggetto non disponibile");
+                }
+            } else {
+                System.err.println("Tipo di oggetto non gestito");
+            }
+        } else {
+            System.err.println("Scelta oggetto non valida, riprova!");
+        }
+    }
 
     public void run() {
 
@@ -68,8 +120,12 @@ public class UIManager {
             choice = this.askInput();
             switch (choice) {
                 case "1":
-                    int choice2;
-                    choice2 = menuNegozio(credito);
+                    int choice2 = menuNegozio(user.getCredito());
+                        if (choice2 >= 1 && choice2 <= 3) {
+                            negozio(user, choice2, listaNegozi);
+                        } else {
+                            System.err.println("Scelta negozio non valida, riprova!");
+                        }
                     break;
 
                 case "2":
@@ -81,6 +137,7 @@ public class UIManager {
                     break;
                 
                 case "0":
+                    System.out.println("\nApplicazione chiusa, grazie e arrivederci!\n");
                     System.exit(0);
                     break;
             
@@ -92,7 +149,7 @@ public class UIManager {
     }
 
 
-    public static int menuNegozio(int credito) {
+    public static int menuNegozio(double credito) {
         System.out.println("""
                            ---MENU---
         1)Negozio n.1     2)Negozio n.2     3)Negozio n.3     
@@ -101,14 +158,5 @@ public class UIManager {
                 """);
         return sc.nextInt();
     }
-
-    public static int aggiungiCredito(int credito) {
-        return sc.nextInt() + credito;
-    }
-
-    public static int compra(int credito) {
-        return credito;         //Fa finito sottraendo i soldi dal credito dello user
-    }
-
 
 }
