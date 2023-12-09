@@ -15,7 +15,7 @@ public class UIManager {
     private final String FURNITURE = "FURNITURE";
     private final String BEVANDE = "BEVANDE";
     private final String CIBO = "CIBO"; 
-    private LocalDate data = LocalDate.now();
+    private static LocalDate data = LocalDate.now();
     private final String MENU = """
 
             Data:""" + data + """
@@ -35,19 +35,19 @@ public class UIManager {
         System.out.println(MENU);
     }
 
-    public String askInput() {
+    public static String askInput() {
         System.out.print("-> ");
         return sc.nextLine();
     }
 
-    public int askInputInt() {
+    public static int askInputInt() {
         System.out.print("-> ");
         return sc.nextInt();
     }
     
     public static String menuCliente() {
         System.out.println("\nBenvenuto/a \nInserisci il tuo nome: ");
-        return sc.nextLine();
+        return askInput();
     }
      
     public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi) {
@@ -58,15 +58,15 @@ public class UIManager {
                 System.out.println("Inventario del Negozio " + sceltaNegozio);
     
                 List<Item> inventarioNegozio = negozioCorrente.getInventario();
-                for (int i = 0; i < inventarioNegozio.size(); i++) {
-                    Item item = inventarioNegozio.get(i);
-                    System.out.println((i + 1) + ") " + item.getNome() + " - Prezzo: " + item.getPrezzo() + " - Quantita': " + item.getQuantita());
+
+                for(Item item : negozioCorrente.getInventario()) {
+                    System.out.println(item.toString());
                 }
     
                 System.out.println("Credito disponibile: " + user.getCredito());
                 System.out.println("Seleziona un oggetto da acquistare o 0 per tornare al menu principale: ");
     
-                int sceltaOggetto = sc.nextInt();
+                int sceltaOggetto = askInputInt();
                 if (sceltaOggetto == 0) {
                     continuaAcquisti = false;
                 } else {
@@ -74,7 +74,7 @@ public class UIManager {
                 }
             } while (continuaAcquisti);
         } else {
-            System.err.println("Negozio non trovato");
+            System.err.println("Negozio non trovato\n");
         }
     }
     
@@ -82,31 +82,44 @@ public class UIManager {
         if (numeroNegozio >= 1 && numeroNegozio <= listaNegozi.size()) {
             return listaNegozi.get(numeroNegozio - 1); 
         } else {
-            System.err.println("Numero del negozio non valido");
+            System.err.println("Numero del negozio non valido\n");
             return null;
         }
     }
     
     private static void acquistaOggetto(Utente user, Negozio negozio, int sceltaOggetto) {
         if (sceltaOggetto >= 1 && sceltaOggetto <= negozio.getInventario().size()) {
-            Item itemScelto = negozio.getInventario().get(sceltaOggetto - 1);
-    
-            if (itemScelto instanceof Oggetti) {
-                Oggetti oggettoScelto = (Oggetti) itemScelto;
-    
-                if (user.getCredito() >= oggettoScelto.getPrezzo() && oggettoScelto.getQuantita() > 0) {
-                    user.aggiungiProdottoAcquistato(oggettoScelto);
-                    user.setCredito(user.getCredito() - oggettoScelto.getPrezzo());
-                    oggettoScelto.setQuantita(oggettoScelto.getQuantita() - 1);
-                    System.out.println("Hai acquistato: " + oggettoScelto.getNome());
+            Item itemScelto = negozio.getInventario().get(sceltaOggetto - 1); 
+
+            if (itemScelto instanceof Item) {
+                Item itemCopia = (Item) itemScelto.clone();
+
+                if (user.getCredito() >= itemScelto.getPrezzo() && itemScelto.getQuantita() > 0) {
+                    boolean controllo = false;
+                    for(Item item : user.getProdottiAcquistati()){
+                        if(item.getNome().equals(itemScelto.getNome())){
+                            item.setQuantita(item.getQuantita() + 1);
+                            controllo = true;
+                            break;
+                        }
+                    }
+
+                    if(!controllo) {
+                        itemCopia.setQuantita(1);
+                        user.aggiungiProdottoAcquistato(itemCopia);
+                    }
+
+                    user.setCredito(user.getCredito() - itemScelto.getPrezzo());
+                    itemScelto.setQuantita(itemScelto.getQuantita() - 1);
+                    System.out.println("\033[1m\nHai acquistato: " + itemScelto.getNome() + "\n\033[0m");
                 } else {
-                    System.err.println("Denaro insufficiente o oggetto non disponibile");
+                    System.err.println("\033[1m\nDenaro insufficiente o oggetto non disponibile\n\033[0m");
                 }
             } else {
-                System.err.println("Tipo di oggetto non gestito");
+                System.err.println("\033[1m\nTipo non trattato\n\033[0m");
             }
         } else {
-            System.err.println("Scelta oggetto non valida, riprova!");
+            System.err.println("\033[1m\nScelta oggetto non valida, riprova!\n\033[0m");
         }
     }
 
@@ -120,28 +133,29 @@ public class UIManager {
         
         List<Negozio> listaNegozi = new ArrayList<>(); 
 
-        Oggetti oggetto1 = new Oggetti("Oggetto1", 10, 20.0, false, "Garanzia1", TECH);
-        Oggetti oggetto2 = new Oggetti("Oggetto2", 5, 15.0, false, "Garanzia2", TOOL);
-        Consumabili consumabile1 = new Consumabili("Coca-Cola", 3, 11, false, "27/12/2024", BEVANDE);
-        Servizi servizio1 = new Servizi("Massaggio", 3, 48, false, "30 minuti");
+        Oggetti oggetto1 = new Oggetti("Oggetto1", 10, 20.0, "Garanzia1", TECH);
+        Oggetti oggetto2 = new Oggetti("Oggetto2", 5, 15.0, "Garanzia2", TOOL);
+        Consumabili consumabile1 = new Consumabili("Coca-Cola", 3, 2, "27/2/2024", BEVANDE);
+        Consumabili consumabile2 = new Consumabili("Panino", 6, 7, "08/12/2023", BEVANDE);
+        Servizi servizio1 = new Servizi("Massaggio", 3, 48, "30 minuti");
 
-        List<Item> inventarioNegozio1 = new ArrayList<>();
-        inventarioNegozio1.add(oggetto1);
-        inventarioNegozio1.add(oggetto2);
+        List<Item> inventarioBrico = new ArrayList<>();
+        inventarioBrico.add(oggetto1);
+        inventarioBrico.add(oggetto2);
 
-        List<Item> inventarioNegozio2 = new ArrayList<>();
-        inventarioNegozio2.add(consumabile1);
+        List<Item> inventarioEsselunga = new ArrayList<>();
+        inventarioEsselunga.add(consumabile1);
 
-        List<Item> inventarioNegozio3 = new ArrayList<>();
-        inventarioNegozio3.add(servizio1);
+        List<Item> inventarioMassaggi = new ArrayList<>();
+        inventarioMassaggi.add(servizio1);
 
-        Negozio negozio1 = new Negozio(inventarioNegozio1);
-        Negozio negozio2 = new Negozio(inventarioNegozio2);
-        Negozio negozio3 = new Negozio(inventarioNegozio3);
+        Negozio brico = new Negozio(inventarioBrico);
+        Negozio esselunga = new Negozio(inventarioEsselunga);
+        Negozio centroMassaggi = new Negozio(inventarioMassaggi);
 
-        listaNegozi.add(negozio1);
-        listaNegozi.add(negozio2);
-        listaNegozi.add(negozio3);
+        listaNegozi.add(brico);
+        listaNegozi.add(esselunga);
+        listaNegozi.add(centroMassaggi);
 
 
         String nome = menuCliente();
@@ -152,27 +166,26 @@ public class UIManager {
 
         this.printMenu();
         do{
-            choice = this.askInput();
+            choice = askInput();
             switch (choice) {
                 case "1":
                     int choice2 = menuNegozio(user.getCredito());
-                        if (choice2 >= 1 && choice2 <= 3) {
-                            negozio(user, choice2, listaNegozi);
-                        } else {
-                            System.err.println("Scelta negozio non valida, riprova!");
-                        }
-                        /* 
-                        switch(choice2) {
-                            case 1:
-                                negozio1.getInventario();
-                                break;
-                            default:
-                            
-                                break;
-                        }*/
+                        if(choice2 == 0) {
+                            System.out.println("Torna indietro");
+                            askInput();
+                            printMenu();
+                            }else{
+                            if (choice2 >= 1 && choice2 <= listaNegozi.size()) {
+                                negozio(user, choice2, listaNegozi);
+                            }else {
+                                System.err.println("Scelta negozio non valida, riprova!\n");
+                            }
+                        }     
+
                     break;
 
                 case "2":
+                    
                     user.visualizzaDashboard();
                     break;
 
@@ -186,7 +199,7 @@ public class UIManager {
                     break;
             
                 default:
-                    System.err.println("Opzione sbagliata: digita 3 per rivedere il menu");
+                    System.err.println("\n\nOpzione sbagliata: digita 3 per rivedere il menu");
                     break;
             }
         }while(choice.equalsIgnoreCase("0") == false);
@@ -202,14 +215,14 @@ public class UIManager {
         1)Negozio n.1     2)Negozio n.2     3)Negozio n.3     
                         0)Torna indietro
 
-                        Credito =  """ + credito + """
+                        Credito= """ + credito + """
                 """);
-        return sc.nextInt();
+        return askInputInt();
     }
 
     public static void aggiungiSoldi(Utente user){
         System.out.println("Inserisci i soldi da aggiungere: ");
-
+        user.setCredito(user.getCredito() + askInputInt());
     }
 
 }

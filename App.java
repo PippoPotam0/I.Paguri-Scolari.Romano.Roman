@@ -17,19 +17,14 @@ e nella dashboard iniziale vede il suo credito e il suo inventario (le cose che 
 //Servizi, Oggetti, Consumabili = classi di Item con aggiuntivi attributi
 //Utente = oggetto;
 
-import java.util.ArrayList;
-import java.util.List;
-import models.Negozio;
 import ui.UIManager;
-import models.Oggetti; 
-import models.Item;
 
 public class App extends UIManager {
           
     public static void main(String[] args) {
-
         UIManager uiManager = new UIManager();
 
+        
 		uiManager.run();
 
     }

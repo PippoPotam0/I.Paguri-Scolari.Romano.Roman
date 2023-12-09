@@ -21,12 +21,16 @@ public class Utente{
         System.out.println("Inventario: ");
 
         for (Item prodotto : prodottiAcquistati) {
-            System.out.println(prodotto.getNome() + " " + prodotto.getPrezzo());
+            System.out.println(prodotto.toString());
         }
     }
 
-    public void aggiungiProdottoAcquistato(Oggetti oggetto) {
-        prodottiAcquistati.add(oggetto);
+    public void aggiungiProdottoAcquistato(Item item) {
+        prodottiAcquistati.add(item);
+    }
+
+    public List<Item> getProdottiAcquistati() {
+        return prodottiAcquistati;
     }
 
     public String getNome() {
