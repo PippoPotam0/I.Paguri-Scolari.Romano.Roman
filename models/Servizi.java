@@ -8,6 +8,11 @@ public class Servizi extends Item {
         this.tempoPrestazione = tempoPrestazione;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " - Tempo di prestazione: " + tempoPrestazione;
+    }
+
     public String getTempoPrestazione() {
         return tempoPrestazione;
     }
@@ -16,8 +21,4 @@ public class Servizi extends Item {
         this.tempoPrestazione = tempoPrestazione;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + " - Tempo di prestazione: " + tempoPrestazione;
-    }
 }

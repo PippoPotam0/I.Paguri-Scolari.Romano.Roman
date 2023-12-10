@@ -5,8 +5,8 @@ public class Consumabili extends Item {
     private String scadenza;
     private String categoria;
 
-    public Consumabili(String nome, int quantita, double prezzo, String scadenza, String categoria) { //categoria = BEVANDE, CIBO. vanno messi
-        super(nome, quantita, prezzo);                                                                           //come unici possibili valori
+    public Consumabili(String nome, int quantita, double prezzo, String scadenza, String categoria) { 
+        super(nome, quantita, prezzo);                                                                          
         this.scadenza = scadenza;
         this.categoria = categoria;
     }

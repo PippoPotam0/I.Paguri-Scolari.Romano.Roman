@@ -12,15 +12,14 @@ public class UIManager {
 
     private final String TECH = "TECH";
     private final String TOOL = "TOOL";
-    private final String FURNITURE = "FURNITURE";
     private final String BEVANDE = "BEVANDE";
     private final String CIBO = "CIBO"; 
     private static LocalDate data = LocalDate.now();
-    private final String MENU = """
+    private static final String MENU = """
 
             Data:""" + data + """
                         
-                        ---Menu principale---
+                        ---MENU PRINCIPALE---
 
             1)Visualizza Negozi        2)Visualizza Dashboard
 
@@ -56,18 +55,17 @@ public class UIManager {
             boolean continuaAcquisti = true;
             do {
                 System.out.println("Inventario del Negozio " + sceltaNegozio);
-    
-                List<Item> inventarioNegozio = negozioCorrente.getInventario();
 
                 for(Item item : negozioCorrente.getInventario()) {
                     System.out.println(item.toString());
                 }
     
-                System.out.println("Credito disponibile: " + user.getCredito());
-                System.out.println("Seleziona un oggetto da acquistare o 0 per tornare al menu principale: ");
+                System.out.println("\nCredito disponibile: " + user.getCredito());
+                System.out.println("\nSeleziona un oggetto da acquistare o 0 per tornare al menu principale: ");
     
                 int sceltaOggetto = askInputInt();
                 if (sceltaOggetto == 0) {
+                    System.out.println(MENU);
                     continuaAcquisti = false;
                 } else {
                     acquistaOggetto(user, negozioCorrente, sceltaOggetto);
@@ -122,32 +120,33 @@ public class UIManager {
             System.err.println("\033[1m\nScelta oggetto non valida, riprova!\n\033[0m");
         }
     }
-
     
-   
-
-
     public void run() {
-
-        
-        
+  
         List<Negozio> listaNegozi = new ArrayList<>(); 
 
-        Oggetti oggetto1 = new Oggetti("Oggetto1", 10, 20.0, "Garanzia1", TECH);
-        Oggetti oggetto2 = new Oggetti("Oggetto2", 5, 15.0, "Garanzia2", TOOL);
+        Oggetti oggetto1 = new Oggetti("Telecamera di sicurezza", 9, 99.90, "1 anno", TECH);
+        Oggetti oggetto2 = new Oggetti("Metro", 25, 9.20, "1 mese", TOOL);
+        Oggetti oggetto3 = new Oggetti("Trapano elettrico", 3, 45.0, "6 mesi", TECH);
+        Oggetti oggetto4 = new Oggetti("Cacciavite", 12, 15.0, "1 mese", TOOL);
         Consumabili consumabile1 = new Consumabili("Coca-Cola", 3, 2, "27/2/2024", BEVANDE);
-        Consumabili consumabile2 = new Consumabili("Panino", 6, 7, "08/12/2023", BEVANDE);
-        Servizi servizio1 = new Servizi("Massaggio", 3, 48, "30 minuti");
+        Consumabili consumabile2 = new Consumabili("Panino", 6, 7, "08/12/2023", CIBO);
+        Servizi servizio1 = new Servizi("Massaggio", 3, 30, "30 minuti");
+        Servizi servizio2 = new Servizi("Massaggio", 3, 55, "1 ora");
 
         List<Item> inventarioBrico = new ArrayList<>();
         inventarioBrico.add(oggetto1);
         inventarioBrico.add(oggetto2);
+        inventarioBrico.add(oggetto3);
+        inventarioBrico.add(oggetto4);
 
         List<Item> inventarioEsselunga = new ArrayList<>();
         inventarioEsselunga.add(consumabile1);
+        inventarioEsselunga.add(consumabile2);
 
         List<Item> inventarioMassaggi = new ArrayList<>();
         inventarioMassaggi.add(servizio1);
+        inventarioMassaggi.add(servizio2);
 
         Negozio brico = new Negozio(inventarioBrico);
         Negozio esselunga = new Negozio(inventarioEsselunga);
@@ -161,7 +160,6 @@ public class UIManager {
         String nome = menuCliente();
         Utente user = new Utente(nome);
 
-        int credito = 200;
         String choice;
 
         this.printMenu();
@@ -185,7 +183,6 @@ public class UIManager {
                     break;
 
                 case "2":
-                    
                     user.visualizzaDashboard();
                     break;
 
@@ -197,32 +194,23 @@ public class UIManager {
                     System.out.println("\nApplicazione chiusa, grazie e arrivederci!\n");
                     System.exit(0);
                     break;
-            
-                default:
-                    System.err.println("\n\nOpzione sbagliata: digita 3 per rivedere il menu");
-                    break;
+
             }
         }while(choice.equalsIgnoreCase("0") == false);
     }
-
 
     public static int menuNegozio(double credito) {
         System.out.println("""
             
         Data:""" + data + """
                         
-                           ---MENU---
-        1)Negozio n.1     2)Negozio n.2     3)Negozio n.3     
-                        0)Torna indietro
+                     ---MENU NEGOZI---
+        1)Brico     2)Esselunga     3)Centro massaggi     
+                      0)Torna indietro
 
                         Credito= """ + credito + """
                 """);
         return askInputInt();
-    }
-
-    public static void aggiungiSoldi(Utente user){
-        System.out.println("Inserisci i soldi da aggiungere: ");
-        user.setCredito(user.getCredito() + askInputInt());
     }
 
 }

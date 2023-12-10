@@ -18,6 +18,7 @@ package models;
         this.prezzo = item.getPrezzo();
     }
 
+    @Override
     public String toString(){
         return "Nome: " + nome + " - Quantità: " + quantita + " - Prezzo: " + prezzo + "$";
     }

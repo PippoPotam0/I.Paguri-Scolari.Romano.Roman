@@ -16,7 +16,7 @@ public class Utente{
     }
 
     public void visualizzaDashboard() {
-        System.out.println("Benvenuto " + this.nome);
+        System.out.println("Benvenuto " + this.nome + ",");
         System.out.println("Credito: " + this.credito +"$");
         System.out.println("Inventario: ");
 
