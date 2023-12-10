@@ -7,7 +7,7 @@ public class Utente{
 
     private String nome;
     private double credito;
-    private List<Item> prodottiAcquistati;
+    private List<Item> prodottiAcquistati; 
 
     public Utente(String nome) {
         this.nome = nome;
@@ -15,6 +15,7 @@ public class Utente{
         this.prodottiAcquistati = new ArrayList<>();
     }
 
+    // stampa una dashboard con le informazioni sull'utente e i prodotti acquistati
     public void visualizzaDashboard() {
         System.out.println("Benvenuto " + this.nome + ",");
         System.out.println("Credito: " + this.credito +"$");
@@ -25,6 +26,7 @@ public class Utente{
         }
     }
 
+    // aggiunge un prodotto acquistato alla lista dell'utente
     public void aggiungiProdottoAcquistato(Item item) {
         prodottiAcquistati.add(item);
     }

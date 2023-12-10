@@ -12,6 +12,7 @@ package models;
         this.prezzo = prezzo;
     }
 
+    // costruttore di copia della classe Item
     public Item(Item item){
         this.nome = item.getNome();
         this.quantita = item.getQuantita();

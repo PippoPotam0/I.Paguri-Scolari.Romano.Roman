@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class UIManager {
 
-    private static Scanner sc;
+    private static Scanner sc; // variabile per l'input da tastiera
 
     private final String TECH = "TECH";
     private final String TOOL = "TOOL";
@@ -31,24 +31,26 @@ public class UIManager {
     }
 
     public void printMenu() {
-        System.out.println(MENU);
+        System.out.println(MENU); // stampa il menu principale
     }
 
     public static String askInput() {
-        System.out.print("-> ");
+        System.out.print("-> ");     // metodo che chiede un input di testo all'utente
         return sc.nextLine();
     }
 
     public static int askInputInt() {
-        System.out.print("-> ");
+        System.out.print("-> ");     // metodo che chiede un input di un n intero all'utente
         return sc.nextInt();
     }
     
     public static String menuCliente() {
-        System.out.println("\nBenvenuto/a \nInserisci il tuo nome: ");
+        System.out.println("\nBenvenuto/a \nInserisci il tuo nome: "); 
         return askInput();
+        // chiede il nome all'utente all'apertura del programma
     }
      
+    // mostra l'inventario di un negozio e consente all'utente di effettuare degli acquisti
     public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi) {
         Negozio negozioCorrente = getNegozio(sceltaNegozio, listaNegozi);
         if (negozioCorrente != null) {
@@ -76,6 +78,7 @@ public class UIManager {
         }
     }
     
+    // restituisce un oggetto Negozio a seconda del numero scelto nel Menu Negozi
     private static Negozio getNegozio(int numeroNegozio, List<Negozio> listaNegozi) {
         if (numeroNegozio >= 1 && numeroNegozio <= listaNegozi.size()) {
             return listaNegozi.get(numeroNegozio - 1); 
@@ -85,6 +88,7 @@ public class UIManager {
         }
     }
     
+    // consente di acquistare un prodotto in un negozio
     private static void acquistaOggetto(Utente user, Negozio negozio, int sceltaOggetto) {
         if (sceltaOggetto >= 1 && sceltaOggetto <= negozio.getInventario().size()) {
             Item itemScelto = negozio.getInventario().get(sceltaOggetto - 1); 
@@ -120,7 +124,8 @@ public class UIManager {
             System.err.println("\033[1m\nScelta oggetto non valida, riprova!\n\033[0m");
         }
     }
-    
+
+    // metodo principale che avvia l'applicazione interfacciandosi anche con l'utente
     public void run() {
   
         List<Negozio> listaNegozi = new ArrayList<>(); 
@@ -199,6 +204,7 @@ public class UIManager {
         }while(choice.equalsIgnoreCase("0") == false);
     }
 
+    // mostra il menu dei negozi e torna la scelta dell'utente 
     public static int menuNegozio(double credito) {
         System.out.println("""
             

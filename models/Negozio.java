@@ -9,9 +9,9 @@ public class Negozio {
         this.inventario = inventario;
     }
 
+    // restituisce l'inventario del negozio
     public List<Item> getInventario() {
         return inventario;
     }
 
 }
-
