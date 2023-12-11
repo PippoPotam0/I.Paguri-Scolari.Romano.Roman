@@ -56,6 +56,11 @@ public class UIManager {
         return sc.nextInt();
     }
 
+    public static double askInputDouble() {
+        System.out.print("-> "); // metodo che chiede un input di un n intero all'utente
+        return sc.nextDouble();
+    }
+
     public static String menuCliente() {
         System.out.println("\nBenvenuto/a \nInserisci il tuo nome: ");
         return askInput();
@@ -163,7 +168,7 @@ public class UIManager {
         Credito residuo: """ + user.getCredito() + """
 
         Inserisci il numero di soldi da aggiungere:""");
-        double soldi = askInputInt();
+        double soldi = askInputDouble();
         user.setCredito(user.getCredito() + soldi);
         System.out.println("\033[1m\nHai aggiunto " + soldi + " al tuo credito\n\033[0m");
     }
