@@ -1,6 +1,6 @@
-# **_Shop Inventory and Customer Management Application_**
+# **Shop Inventory and Customer Management Application**
 
-### **_Authors:_**
+### **Authors:**
 - Scolari Filippo
 - Romano Davide
 - Roman Vlad
@@ -46,6 +46,24 @@ Once the user bought some items, he can open his Dashboard to check his personal
 ![dashboard](https://github.com/PippoPotam0/I.Paguri-Scolari.Romano.Roman/assets/153176955/945c0f1b-83e2-44e2-bf2b-18017517577b)
 
 On the Dashboard the customer can see his ***profile name***, his ***balance*** and all the ***items*** in his inventory.
+
+## Application structure
+The application is executed from the `App.java` file with extends `UIManager.java`. `UIManager.java` is the main part of the application where all the methods are implemented.
+
+`UIManager.java` imports vary packages:
+- `Item.java` - Items abstarct standard class;
+- `Consumabili.java` - Consumables abstract standard class;
+- `Negozio.java` - Shop abstract standard class;
+- `Oggetti.java` - Objects abstract standard class;
+- `Servizzi.java` - Services abstract standard class;
+- `Utente.java` - User abstract standard class.
+
+All these packages contain useful functions and properties like:
+- Private parameters
+- Get/Set methods to have the ability to modify them from the outside
+- Public useful methods
+
+
 
 ## License
 
