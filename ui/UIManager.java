@@ -26,8 +26,9 @@ public class UIManager {
     private static LocalTime ora = LocalTime.now();
     private static final String MENU = """
 
-            Data e ora:""" + data + "   " + ora + """
+            Data e ora:  """ + data + "   " + ora + """
 
+                       
                         ---MENU PRINCIPALE---
 
             1) Visualizza Negozi      2)Visualizza Dashboard
@@ -246,7 +247,8 @@ public class UIManager {
     public static int menuNegozio(double credito) {
         System.out.println("""
 
-                Data:""" + data + """
+                Data e ora: """ + data + "    " + ora + """
+
 
                              ---MENU NEGOZI---
                 1)Brico     2)Esselunga     3)Centro massaggi
