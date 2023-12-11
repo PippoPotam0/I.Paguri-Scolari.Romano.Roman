@@ -1,6 +1,7 @@
 package ui;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +23,18 @@ public class UIManager {
     private final String BEVANDE = "BEVANDE";
     private final String CIBO = "CIBO";
     private static LocalDate data = LocalDate.now();
+    private static LocalTime ora = LocalTime.now();
     private static final String MENU = """
 
-            Data:""" + data + """
+            Data e ora:""" + data + "   " + ora + """
 
                         ---MENU PRINCIPALE---
 
-            1)Visualizza Negozi        2)Visualizza Dashboard
+            1) Visualizza Negozi      2)Visualizza Dashboard
 
-            3)Visualizza menu          0)Esci dall'applicazione
+            3) Visualizza menu        4) Calcola Scadenza Alimenti
+            
+                        0)Esci dall'applicazione
             """;
 
     public UIManager() {
@@ -133,6 +137,7 @@ public class UIManager {
         }
     }
 
+    // metodo per il calcolo della scadenza di un alimento
     public void calcoloScadenza(String scadenza, LocalDate data) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -144,6 +149,14 @@ public class UIManager {
         } else {
             System.out.println("L'alimento è scaduto.");
         }
+    }
+
+    public void calcolaScadenzaAlimento() {
+        System.out.print("Inserisci la data di scadenza dell'alimento nel formato yyyy-MM-dd: ");
+        String dataScadenzaInput = askInput();
+        
+        // Chiamata al metodo di calcolo della scadenza
+        calcoloScadenza(dataScadenzaInput, data);
     }
 
     // metodo principale che avvia l'applicazione interfacciandosi anche con
@@ -214,6 +227,10 @@ public class UIManager {
 
                 case "3":
                     this.printMenu();
+                    break;
+
+                case "4":
+                    calcolaScadenzaAlimento();
                     break;
 
                 case "0":
