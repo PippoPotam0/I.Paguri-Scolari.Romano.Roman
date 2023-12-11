@@ -23,7 +23,29 @@ The user has an initial credit of $200, and each time they decide to buy an item
 - **Dashboard**: Users can view their credit and inventory on the dashboard.
 
 ## How does it works?
-The application is based on input data from the user. To run the application, user must compile `App.java` file.
+The application is based on input data from the user. To run the application, user must compile `App.java` file in the `cmd` with:
+```
+javac App.java
+```
+After that the user can run the application with:
+```
+java App.java
+```
+When the the app is up and running the user will be asked for a username. After that he'll see the Menu UI where he can choose one option:
+
+![menu](https://github.com/PippoPotam0/I.Paguri-Scolari.Romano.Roman/assets/153176955/e6d905ce-7f86-4889-970a-b0630059ae0f)
+
+If the customer chose the 1)Option - the Shop Inventory will open:
+
+![shop](https://github.com/PippoPotam0/I.Paguri-Scolari.Romano.Roman/assets/153176955/740ba984-a1df-443a-a671-8f948fbceb05)
+
+On this page are indicated the ammount of different ***items***, their ***price***, their ***warrantee period*** and their ***category***. Also the customer can see the available ammount of ***money*** on the account. On that stage, the user can chose the item to buy (1x each time) or type `0` to return to the Menu page. 
+
+Once the user bought some items, he can open his Dashboard to check his personal inventory. He must type `0` to return back to the Menu page, then type `2` to visualize the inventory:
+
+![dashboard](https://github.com/PippoPotam0/I.Paguri-Scolari.Romano.Roman/assets/153176955/945c0f1b-83e2-44e2-bf2b-18017517577b)
+
+On the Dashboard the customer can see his ***profile name***, his ***balance*** and all the ***items*** in his inventory.
 
 ## License
 
