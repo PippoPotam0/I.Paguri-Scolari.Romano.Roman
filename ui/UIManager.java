@@ -1,10 +1,17 @@
 package ui;
 
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import models.*;
-import java.time.LocalDate;
+import java.util.Scanner;
+
+import models.Consumabili;
+import models.Item;
+import models.Negozio;
+import models.Oggetti;
+import models.Servizi;
+import models.Utente;
 
 public class UIManager {
 
@@ -13,12 +20,12 @@ public class UIManager {
     private final String TECH = "TECH";
     private final String TOOL = "TOOL";
     private final String BEVANDE = "BEVANDE";
-    private final String CIBO = "CIBO"; 
+    private final String CIBO = "CIBO";
     private static LocalDate data = LocalDate.now();
     private static final String MENU = """
 
             Data:""" + data + """
-                        
+
                         ---MENU PRINCIPALE---
 
             1)Visualizza Negozi        2)Visualizza Dashboard
@@ -35,22 +42,23 @@ public class UIManager {
     }
 
     public static String askInput() {
-        System.out.print("-> ");     // metodo che chiede un input di testo all'utente
+        System.out.print("-> "); // metodo che chiede un input di testo all'utente
         return sc.nextLine();
     }
 
     public static int askInputInt() {
-        System.out.print("-> ");     // metodo che chiede un input di un n intero all'utente
+        System.out.print("-> "); // metodo che chiede un input di un n intero all'utente
         return sc.nextInt();
     }
-    
+
     public static String menuCliente() {
-        System.out.println("\nBenvenuto/a \nInserisci il tuo nome: "); 
+        System.out.println("\nBenvenuto/a \nInserisci il tuo nome: ");
         return askInput();
         // chiede il nome all'utente all'apertura del programma
     }
-     
-    // mostra l'inventario di un negozio e consente all'utente di effettuare degli acquisti
+
+    // mostra l'inventario di un negozio e consente all'utente di effettuare degli
+    // acquisti
     public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi) {
         Negozio negozioCorrente = getNegozio(sceltaNegozio, listaNegozi);
         if (negozioCorrente != null) {
@@ -58,13 +66,13 @@ public class UIManager {
             do {
                 System.out.println("Inventario del Negozio " + sceltaNegozio);
 
-                for(Item item : negozioCorrente.getInventario()) {
+                for (Item item : negozioCorrente.getInventario()) {
                     System.out.println(item.toString());
                 }
-    
+
                 System.out.println("\nCredito disponibile: " + user.getCredito());
                 System.out.println("\nSeleziona un oggetto da acquistare o 0 per tornare al menu principale: ");
-    
+
                 int sceltaOggetto = askInputInt();
                 if (sceltaOggetto == 0) {
                     System.out.println(MENU);
@@ -77,36 +85,36 @@ public class UIManager {
             System.err.println("Negozio non trovato\n");
         }
     }
-    
+
     // restituisce un oggetto Negozio a seconda del numero scelto nel Menu Negozi
     private static Negozio getNegozio(int numeroNegozio, List<Negozio> listaNegozi) {
         if (numeroNegozio >= 1 && numeroNegozio <= listaNegozi.size()) {
-            return listaNegozi.get(numeroNegozio - 1); 
+            return listaNegozi.get(numeroNegozio - 1);
         } else {
             System.err.println("Numero del negozio non valido\n");
             return null;
         }
     }
-    
+
     // consente di acquistare un prodotto in un negozio
     private static void acquistaOggetto(Utente user, Negozio negozio, int sceltaOggetto) {
         if (sceltaOggetto >= 1 && sceltaOggetto <= negozio.getInventario().size()) {
-            Item itemScelto = negozio.getInventario().get(sceltaOggetto - 1); 
+            Item itemScelto = negozio.getInventario().get(sceltaOggetto - 1);
 
             if (itemScelto instanceof Item) {
                 Item itemCopia = (Item) itemScelto.clone();
 
                 if (user.getCredito() >= itemScelto.getPrezzo() && itemScelto.getQuantita() > 0) {
                     boolean controllo = false;
-                    for(Item item : user.getProdottiAcquistati()){
-                        if(item.getNome().equals(itemScelto.getNome())){
+                    for (Item item : user.getProdottiAcquistati()) {
+                        if (item.getNome().equals(itemScelto.getNome())) {
                             item.setQuantita(item.getQuantita() + 1);
                             controllo = true;
                             break;
                         }
                     }
 
-                    if(!controllo) {
+                    if (!controllo) {
                         itemCopia.setQuantita(1);
                         user.aggiungiProdottoAcquistato(itemCopia);
                     }
@@ -125,10 +133,24 @@ public class UIManager {
         }
     }
 
-    // metodo principale che avvia l'applicazione interfacciandosi anche con l'utente
+    public void calcoloScadenza(String scadenza, LocalDate data) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dataScadenza = LocalDate.parse(scadenza, formatter);
+        LocalDate dataAttuale = LocalDate.now();
+
+        if (dataAttuale.isBefore(dataScadenza)) {
+            System.out.println("L'alimento è ancora valido.");
+        } else {
+            System.out.println("L'alimento è scaduto.");
+        }
+    }
+
+    // metodo principale che avvia l'applicazione interfacciandosi anche con
+    // l'utente
     public void run() {
-  
-        List<Negozio> listaNegozi = new ArrayList<>(); 
+
+        List<Negozio> listaNegozi = new ArrayList<>();
 
         Oggetti oggetto1 = new Oggetti("Telecamera di sicurezza", 9, 99.90, "1 anno", TECH);
         Oggetti oggetto2 = new Oggetti("Metro", 25, 9.20, "1 mese", TOOL);
@@ -161,29 +183,28 @@ public class UIManager {
         listaNegozi.add(esselunga);
         listaNegozi.add(centroMassaggi);
 
-
         String nome = menuCliente();
         Utente user = new Utente(nome);
 
         String choice;
 
         this.printMenu();
-        do{
+        do {
             choice = askInput();
             switch (choice) {
                 case "1":
                     int choice2 = menuNegozio(user.getCredito());
-                        if(choice2 == 0) {
-                            System.out.println("Torna indietro");
-                            askInput();
-                            printMenu();
-                            }else{
-                            if (choice2 >= 1 && choice2 <= listaNegozi.size()) {
-                                negozio(user, choice2, listaNegozi);
-                            }else {
-                                System.err.println("Scelta negozio non valida, riprova!\n");
-                            }
-                        }     
+                    if (choice2 == 0) {
+                        System.out.println("Torna indietro");
+                        askInput();
+                        printMenu();
+                    } else {
+                        if (choice2 >= 1 && choice2 <= listaNegozi.size()) {
+                            negozio(user, choice2, listaNegozi);
+                        } else {
+                            System.err.println("Scelta negozio non valida, riprova!\n");
+                        }
+                    }
 
                     break;
 
@@ -194,27 +215,27 @@ public class UIManager {
                 case "3":
                     this.printMenu();
                     break;
-                
+
                 case "0":
                     System.out.println("\nApplicazione chiusa, grazie e arrivederci!\n");
                     System.exit(0);
                     break;
 
             }
-        }while(choice.equalsIgnoreCase("0") == false);
+        } while (choice.equalsIgnoreCase("0") == false);
     }
 
-    // mostra il menu dei negozi e torna la scelta dell'utente 
+    // mostra il menu dei negozi e torna la scelta dell'utente
     public static int menuNegozio(double credito) {
         System.out.println("""
-            
-        Data:""" + data + """
-                        
-                     ---MENU NEGOZI---
-        1)Brico     2)Esselunga     3)Centro massaggi     
-                      0)Torna indietro
 
-                        Credito= """ + credito + """
+                Data:""" + data + """
+
+                             ---MENU NEGOZI---
+                1)Brico     2)Esselunga     3)Centro massaggi
+                              0)Torna indietro
+
+                                Credito= """ + credito + """
                 """);
         return askInputInt();
     }
