@@ -31,11 +31,11 @@ public class UIManager {
                        
                         ---MENU PRINCIPALE---
 
-            1) Visualizza Negozi      2)Visualizza Dashboard
+            1) Visualizza Negozi      2) Visualizza Dashboard
 
-            3) Visualizza menu        4) Calcola Scadenza Alimenti
+            3) Visualizza menu        4) Aggiungi denaro
             
-                        0)Esci dall'applicazione
+                       0)Esci dall'applicazione
             """;
 
     public UIManager() {
@@ -70,9 +70,15 @@ public class UIManager {
             boolean continuaAcquisti = true;
             do {
                 System.out.println("Inventario del Negozio " + sceltaNegozio);
-
+                
                 for (Item item : negozioCorrente.getInventario()) {
-                    System.out.println(item.toString());
+                    if (item instanceof Consumabili) {
+                        Consumabili consumabile = (Consumabili) item;
+                        String str = calcoloScadenza(consumabile.getScadenza(), data);
+                        System.out.println(consumabile.toString() + str);
+                    }else {
+                        System.out.println(item.toString());
+                    }
                 }
 
                 System.out.println("\nCredito disponibile: " + user.getCredito());
@@ -139,25 +145,27 @@ public class UIManager {
     }
 
     // metodo per il calcolo della scadenza di un alimento
-    public void calcoloScadenza(String scadenza, LocalDate data) {
+    public static String calcoloScadenza(String scadenza, LocalDate data) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dataScadenza = LocalDate.parse(scadenza, formatter);
         LocalDate dataAttuale = LocalDate.now();
 
-        if (dataAttuale.isBefore(dataScadenza)) {
-            System.out.println("L'alimento è ancora valido.");
-        } else {
-            System.out.println("L'alimento è scaduto.");
+        if (dataAttuale.isAfter(dataScadenza)) {
+            return " (SCADUTO)";
+        }else {
+            return "";
         }
     }
 
-    public void calcolaScadenzaAlimento() {
-        System.out.print("Inserisci la data di scadenza dell'alimento nel formato yyyy-MM-dd: ");
-        String dataScadenzaInput = askInput();
-        
-        // Chiamata al metodo di calcolo della scadenza
-        calcoloScadenza(dataScadenzaInput, data);
+    public void aggiungiSoldi(Utente user){
+        System.out.println("""
+        Credito residuo: """ + user.getCredito() + """
+
+        Inserisci il numero di soldi da aggiungere:""");
+        double soldi = askInputInt();
+        user.setCredito(user.getCredito() + soldi);
+        System.out.println("\033[1m\nHai aggiunto " + soldi + " al tuo credito\n\033[0m");
     }
 
     // metodo principale che avvia l'applicazione interfacciandosi anche con
@@ -167,13 +175,13 @@ public class UIManager {
         List<Negozio> listaNegozi = new ArrayList<>();
 
         Oggetti oggetto1 = new Oggetti("Telecamera di sicurezza", 9, 99.90, "1 anno", TECH);
-        Oggetti oggetto2 = new Oggetti("Metro", 25, 9.20, "1 mese", TOOL);
-        Oggetti oggetto3 = new Oggetti("Trapano elettrico", 3, 45.0, "6 mesi", TECH);
+        Oggetti oggetto2 = new Oggetti("Metro", 25, 8.20, "1 mese", TOOL);
+        Oggetti oggetto3 = new Oggetti("Trapano elettrico", 3, 45.00, "6 mesi", TECH);
         Oggetti oggetto4 = new Oggetti("Cacciavite", 12, 15.0, "1 mese", TOOL);
-        Consumabili consumabile1 = new Consumabili("Coca-Cola", 3, 2, "27/2/2024", BEVANDE);
-        Consumabili consumabile2 = new Consumabili("Panino", 6, 7, "08/12/2023", CIBO);
-        Servizi servizio1 = new Servizi("Massaggio", 3, 30, "30 minuti");
-        Servizi servizio2 = new Servizi("Massaggio", 3, 55, "1 ora");
+        Consumabili consumabile1 = new Consumabili("Coca-Cola", 3, 2.00, "2024-12-02", BEVANDE);
+        Consumabili consumabile2 = new Consumabili("Panino", 6, 7.00, "2023-12-08", CIBO);
+        Servizi servizio1 = new Servizi("Massaggio", 3, 30.00, "30 minuti");
+        Servizi servizio2 = new Servizi("Massaggio", 3, 55.00, "1 ora");
 
         List<Item> inventarioBrico = new ArrayList<>();
         inventarioBrico.add(oggetto1);
@@ -231,7 +239,7 @@ public class UIManager {
                     break;
 
                 case "4":
-                    calcolaScadenzaAlimento();
+                    aggiungiSoldi(user);
                     break;
 
                 case "0":
@@ -247,12 +255,9 @@ public class UIManager {
     public static int menuNegozio(double credito) {
         System.out.println("""
 
-                Data e ora: """ + data + "    " + ora + """
-
-
                              ---MENU NEGOZI---
-                1)Brico     2)Esselunga     3)Centro massaggi
-                              0)Torna indietro
+                    1)Brico     2)Esselunga     3)Centro massaggi
+                             0)Torna indietro
 
                                 Credito= """ + credito + """
                 """);

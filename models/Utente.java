@@ -11,13 +11,13 @@ public class Utente{
 
     public Utente(String nome) {
         this.nome = nome;
-        this.credito = 200;
+        this.credito = 200.00;
         this.prodottiAcquistati = new ArrayList<>();
     }
 
     // stampa una dashboard con le informazioni sull'utente e i prodotti acquistati
     public void visualizzaDashboard() {
-        System.out.println("Benvenuto " + this.nome + ",");
+        System.out.println("Benvenuto, " + this.nome);
         System.out.println("Credito: " + this.credito +"$");
         System.out.println("Inventario: ");
 
