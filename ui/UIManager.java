@@ -26,14 +26,14 @@ public class UIManager {
     private static LocalTime ora = LocalTime.now();
     private static final String MENU = """
 
-            Data e ora:  """ + data + "   " + ora + """
+        \033[34mData e ora:  \033[0m""" + data + "   " + ora + """
 
                        
-                        ---MENU PRINCIPALE---
+            \033[31m            ---MENU PRINCIPALE---\033[0m
 
-            1) Visualizza Negozi      2)Visualizza Dashboard
+            \033[32m1)\033[0m Visualizza Negozi      \033[33m2)\033[0mVisualizza Dashboard
 
-            3) Visualizza menu        4) Calcola Scadenza Alimenti
+            \033[35m3)\033[0m Visualizza menu        \033[36m4)\033[0m Calcola Scadenza Alimenti
             
                         0)Esci dall'applicazione
             """;
@@ -250,7 +250,7 @@ public class UIManager {
                 Data e ora: """ + data + "    " + ora + """
 
 
-                             ---MENU NEGOZI---
+                \033[34m             ---MENU NEGOZI---\033[0m
                 1)Brico     2)Esselunga     3)Centro massaggi
                               0)Torna indietro
 
