@@ -80,9 +80,9 @@ public class UIManager {
                     if (item instanceof Consumabili) {
                         Consumabili consumabile = (Consumabili) item;
                         String str = calcoloScadenza(consumabile.getScadenza(), data);
-                        System.out.println(consumabile.toString() + str);
+                        System.out.println("\n" + consumabile.toString() + str);
                     }else {
-                        System.out.println(item.toString());
+                        System.out.println("\n" + item.toString());
                     }
                 }
 
