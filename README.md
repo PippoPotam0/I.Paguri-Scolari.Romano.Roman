@@ -1,75 +1,102 @@
-package ui;
+# **Shop Inventory and Customer Management Application**
 
+### **Authors:**
+- Scolari Filippo
+- Romano Davide
+- Roman Vlad
+
+## Introduction
+This application is designed to manage the inventory of a store and its customers. A user opening the application can access it as a customer by entering a name and then view a list of stores. Each store has an inventory of items. Each item has a name, quantity, and price. Items are categorized into:
+
+- ***Services*** (also have a performance time)
+- ***Objects*** (have a warranty time and a category with the domain values: TECH, TOOL, FURNITURE)
+- ***Consumables*** (have an expiration date and a category with the domain values: BEVERAGES, FOOD)
+
+The user has an initial credit of ***$200***, and each time they decide to buy an item, they pay the necessary amount to purchase 1x the selected item. To summarize, the user accesses a store, views its items, decides whether to buy an item or go back, and on the initial dashboard, sees their credit and inventory (the items they have bought).
+
+## Features
+
+- **User Authentication**: Users can log in with a name.
+- **Store Navigation**: Users can browse a list of stores.
+- **Inventory View**: Users can view the inventory of items in a store.
+- **Purchase Items**: Users can buy items and pay the necessary amount.
+- **Dashboard**: Users can view their credit and inventory on the dashboard.
+
+## How does it works?
+The application is based on input data from the user. To run the application, user must compile `App.java` file in the `cmd` with:
+```
+javac App.java
+```
+After that the user can run the application with:
+```
+java App.java
+```
+When the the app is up and running the user will be asked for a ***username***. After that he'll see the Menu UI where he can choose one option:
+
+![menu](https://github.com/PippoPotam0/I.Paguri-Scolari.Romano.Roman/assets/153176955/e6d905ce-7f86-4889-970a-b0630059ae0f)
+
+If the customer chose the 1)Option - the Shop Inventory will open:
+
+![shop](https://github.com/PippoPotam0/I.Paguri-Scolari.Romano.Roman/assets/153176955/740ba984-a1df-443a-a671-8f948fbceb05)
+
+On this page are indicated the ammount of different ***items***, their ***price***, their ***warrantee period*** and their ***category***. Also the customer can see the available ammount of ***money*** on the account. On that stage, the user can chose the item to buy (1x each time) or type `0` to return to the Menu page. 
+
+Once the user bought some items, he can open his Dashboard to check his personal inventory. He must type `0` to return back to the Menu page, then type `2` to visualize the inventory:
+
+![dashboard](https://github.com/PippoPotam0/I.Paguri-Scolari.Romano.Roman/assets/153176955/945c0f1b-83e2-44e2-bf2b-18017517577b)
+
+On the Dashboard the customer can see his ***profile name***, his ***balance*** and all the ***items*** in his inventory.
+
+## Application structure
+The application is executed from the `App.java` file which extends `UIManager.java`. `UIManager.java` is the main part of the application where all the methods are implemented.
+
+`UIManager.java` imports vary packages:
+- `Item.java` - ***Items*** abstarct standard class;
+- `Consumabili.java` - ***Consumables*** abstract standard class;
+- `Negozio.java` - ***Shop*** abstract standard class;
+- `Oggetti.java` - ***Objects*** abstract standard class;
+- `Servizzi.java` - ***Services*** abstract standard class;
+- `Utente.java` - ***User*** abstract standard class.
+
+All these packages contain useful functions and properties like:
+- ***Private parameters***
+- ***Get/Set methods*** to have the ability to modify them from the outside
+- ***Public useful methods***
+
+## Code structure
+The `UIManager.java` imported libraries:
+
+```
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+```
 
-import models.Consumabili;
-import models.Item;
-import models.Negozio;
-import models.Oggetti;
-import models.Servizi;
-import models.Utente;
 
-public class UIManager {
+For the input manipulation is used `java.util.Scanner` library which makes easier the usage of IO with this method:
 
-    private static Scanner sc; // variabile per l'input da tastiera
-
-    private final String TECH = "TECH";
-    private final String TOOL = "TOOL";
-    private final String BEVANDE = "BEVANDE";
-    private final String CIBO = "CIBO";
-    private static LocalDate data = LocalDate.now();
-    private static LocalTime ora = LocalTime.now();
-    private static final String MENU = """
-
-        \033[34mData e ora:  \033[0m""" + data + "   " + ora + """
-
-                       
-            \033[31m            ---MENU PRINCIPALE---\033[0m
-
-            \033[32m1)\033[0m Visualizza Negozi      \033[33m2)\033[0m Visualizza Dashboard
-
-            \033[35m3)\033[0m Visualizza menu        \033[36m4)\033[0m Ricarica denaro        
-                       
-                      0)Esci dall'applicazione
-            """;
-
-    public UIManager() {
+```
+ public UIManager() {
         this.sc = new Scanner(System.in);
     }
+```
 
-    public void printMenu() {
-        System.out.println(MENU); // stampa il menu principale
-    }
+Then making various `askInput` alternatives for `String`, `Int` and `Double` methods.
 
+```
     public static String askInput() {
-        System.out.print("-> "); // metodo che chiede un input di testo all'utente
+        System.out.print("-> ");
         return sc.nextLine();
     }
+```
 
-    public static int askInputInt() {
-        System.out.print("-> "); // metodo che chiede un input di un n intero all'utente
-        return sc.nextInt();
-    }
+The method `public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi)` is used to show the user the inventory of a shop, and allows him to make purchases.
 
-    public static double askInputDouble() {
-        System.out.print("-> "); // metodo che chiede un input di un n intero all'utente
-        return sc.nextDouble();
-    }
-
-    public static String menuCliente() {
-        System.out.println("\nBenvenuto/a \nInserisci il tuo nome: ");
-        return askInput();
-        // chiede il nome all'utente all'apertura del programma
-    }
-
-    // mostra l'inventario di un negozio e consente all'utente di effettuare degli
-    // acquisti
-    public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi) {
+```
+public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi){
         Negozio negozioCorrente = getNegozio(sceltaNegozio, listaNegozi);
         if (negozioCorrente != null) {
             boolean continuaAcquisti = true;
@@ -100,20 +127,14 @@ public class UIManager {
         } else {
             System.err.println("Negozio non trovato\n");
         }
-    }
 
-    // restituisce un oggetto Negozio a seconda del numero scelto nel Menu Negozi
-    private static Negozio getNegozio(int numeroNegozio, List<Negozio> listaNegozi) {
-        if (numeroNegozio >= 1 && numeroNegozio <= listaNegozi.size()) {
-            return listaNegozi.get(numeroNegozio - 1);
-        } else {
-            System.err.println("Numero del negozio non valido\n");
-            return null;
-        }
-    }
+}
+```
 
-    // consente di acquistare un prodotto in un negozio
-    private static void acquistaOggetto(Utente user, Negozio negozio, int sceltaOggetto) {
+The method `private static void acquistaOggetto(Utente user, Negozio negozio, int sceltaOggetto)` allows buying items from the shops.
+
+```
+private static void acquistaOggetto(Utente user, Negozio negozio, int sceltaOggetto){
         if (sceltaOggetto >= 1 && sceltaOggetto <= negozio.getInventario().size()) {
             Item itemScelto = negozio.getInventario().get(sceltaOggetto - 1);
 
@@ -147,11 +168,13 @@ public class UIManager {
         } else {
             System.err.println("\033[1m\nScelta oggetto non valida, riprova!\n\033[0m");
         }
-    }
+}
+```
 
-    // metodo per il calcolo della scadenza di un alimento
-    public static String calcoloScadenza(String scadenza, LocalDate data) {
+The method `public static String calcoloScadenza(String scadenza, LocalDate data)` is used to calcolate the expiration date of a consumable item.
 
+```
+public static String calcoloScadenza(String scadenza, LocalDate data){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dataScadenza = LocalDate.parse(scadenza, formatter);
         LocalDate dataAttuale = LocalDate.now();
@@ -161,22 +184,30 @@ public class UIManager {
         }else {
             return "";
         }
-    }
+}
+```
 
-    public void aggiungiSoldi(Utente user){
+The method `public static int menuNegozio(double credito)` shows the customer the shop menu. From this menu, the user can choose which store to visit and make purchases.
+```
+public static int menuNegozio(double credito){
         System.out.println("""
-        Credito residuo: """ + user.getCredito() + """
 
-        Inserisci il numero di soldi da aggiungere:""");
-        double soldi = askInputDouble();
-        user.setCredito(user.getCredito() + soldi);
-        System.out.println("\033[1m\nHai aggiunto " + soldi + " al tuo credito\n\033[0m");
+                             ---MENU NEGOZI---
+                    1)Brico     2)Esselunga     3)Centro massaggi
+                             0)Torna indietro
+
+                                Credito= """ + credito + """
+                """);
+        return askInputInt();
     }
+}
+```
 
-    // metodo principale che avvia l'applicazione interfacciandosi anche con
-    // l'utente
-    public void run() {
 
+The method `public void run()` is the main method of the `UIManager.java` which is used directly with the user. Basicaly, that's the innterface what the user see and use.
+
+```
+public void run(){
         List<Negozio> listaNegozi = new ArrayList<>();
 
         Oggetti oggetto1 = new Oggetti("Telecamera di sicurezza", 9, 99.90, "1 anno", TECH);
@@ -254,22 +285,9 @@ public class UIManager {
 
             }
         } while (choice.equalsIgnoreCase("0") == false);
-    }
-
-    // mostra il menu dei negozi e torna la scelta dell'utente
-    public static int menuNegozio(double credito) {
-        System.out.println("""
-
-                Data e ora: """ + data + "    " + ora + """
-
-
-                \033[34m             ---MENU NEGOZI---\033[0m
-                1)Brico     2)Esselunga     3)Centro massaggi
-                              0)Torna indietro
-
-                                Credito= """ + credito + """
-                """);
-        return askInputInt();
-    }
-
 }
+```
+
+## License
+
+This project is licensed under the [I.Paguri License](LICENSE).
