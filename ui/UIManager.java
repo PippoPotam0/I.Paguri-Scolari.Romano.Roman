@@ -1,11 +1,12 @@
 package ui;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import models.Consumabili;
 import models.Item;
@@ -20,13 +21,15 @@ public class UIManager {
 
     private final String TECH = "TECH";
     private final String TOOL = "TOOL";
+    private final String FURNITURE = "FURNITURE";
     private final String BEVANDE = "BEVANDE";
     private final String CIBO = "CIBO";
     private static LocalDate data = LocalDate.now();
-    private static LocalTime ora = LocalTime.now();
+    static Timer timer = new Timer();
     private static final String MENU = """
+        ------------------------------------------------------------
 
-        \033[34mData e ora:  \033[0m""" + data + "   " + ora + """
+        \033[34mData:  \033[0m""" + data + """
 
                        
             \033[31m            ---MENU PRINCIPALE---\033[0m
@@ -36,7 +39,29 @@ public class UIManager {
             \033[35m3)\033[0m Visualizza menu        \033[36m4)\033[0m Ricarica denaro        
                        
                       0)Esci dall'applicazione
+
+        ------------------------------------------------------------
             """;
+
+    // mostra il menu dei negozi e torna la scelta dell'utente
+    public static int menuNegozio(double credito) {
+        System.out.println("""
+        ------------------------------------------------------------
+
+        \033[34mData:  \033[0m""" + data + """
+
+
+            \033[34m                  ---MENU NEGOZI---\033[0m
+
+            \033[32m        1)\033[0mBrico      \033[33m2)\033[0mEsselunga     \033[35m3)\033[0mLet's Relax
+                               0)Torna indietro
+
+                                Credito= """ + credito + """
+
+        ------------------------------------------------------------
+                """);
+        return askInputInt();
+    }
 
     public UIManager() {
         this.sc = new Scanner(System.in);
@@ -44,6 +69,10 @@ public class UIManager {
 
     public void printMenu() {
         System.out.println(MENU); // stampa il menu principale
+    }
+
+    public static void divisore() {
+        System.out.println("------------------------------------------------------------");
     }
 
     public static String askInput() {
@@ -74,8 +103,7 @@ public class UIManager {
         if (negozioCorrente != null) {
             boolean continuaAcquisti = true;
             do {
-                System.out.println("Inventario del Negozio " + sceltaNegozio);
-                
+                System.out.println("Inventario di " + listaNegozi.get(sceltaNegozio-1).getNome());
                 for (Item item : negozioCorrente.getInventario()) {
                     if (item instanceof Consumabili) {
                         Consumabili consumabile = (Consumabili) item;
@@ -86,7 +114,7 @@ public class UIManager {
                     }
                 }
 
-                System.out.println("\nCredito disponibile: " + user.getCredito());
+                System.out.println("\nCredito disponibile: " + user.getCredito() + "$");
                 System.out.println("\nSeleziona un oggetto da acquistare o 0 per tornare al menu principale: ");
 
                 int sceltaOggetto = askInputInt();
@@ -129,13 +157,14 @@ public class UIManager {
                             break;
                         }
                     }
-
                     if (!controllo) {
                         itemCopia.setQuantita(1);
                         user.aggiungiProdottoAcquistato(itemCopia);
                     }
 
                     user.setCredito(user.getCredito() - itemScelto.getPrezzo());
+                    user.setCredito(Math.round(user.getCredito() * 100.00) / 100.00);
+                    
                     itemScelto.setQuantita(itemScelto.getQuantita() - 1);
                     System.out.println("\033[1m\nHai acquistato: " + itemScelto.getNome() + "\n\033[0m");
                 } else {
@@ -147,6 +176,11 @@ public class UIManager {
         } else {
             System.err.println("\033[1m\nScelta oggetto non valida, riprova!\n\033[0m");
         }
+        divisore();
+        timer.schedule(new TimerTask() {
+            public void run() {}
+        }, 1000);
+        
     }
 
     // metodo per il calcolo della scadenza di un alimento
@@ -175,18 +209,24 @@ public class UIManager {
 
     // metodo principale che avvia l'applicazione interfacciandosi anche con
     // l'utente
-    public void run() {
+    public void runUi() {
 
         List<Negozio> listaNegozi = new ArrayList<>();
 
-        Oggetti oggetto1 = new Oggetti("Telecamera di sicurezza", 9, 99.90, "1 anno", TECH);
+        Oggetti oggetto1 = new Oggetti("Telecamera di sicurezza", 9, 99.90, "1 anno", FURNITURE);
         Oggetti oggetto2 = new Oggetti("Metro", 25, 8.20, "1 mese", TOOL);
         Oggetti oggetto3 = new Oggetti("Trapano elettrico", 3, 45.00, "6 mesi", TECH);
         Oggetti oggetto4 = new Oggetti("Cacciavite", 12, 15.0, "1 mese", TOOL);
-        Consumabili consumabile1 = new Consumabili("Coca-Cola", 3, 2.00, "2024-12-02", BEVANDE);
-        Consumabili consumabile2 = new Consumabili("Panino", 6, 7.00, "2023-12-08", CIBO);
-        Servizi servizio1 = new Servizi("Massaggio", 3, 30.00, "30 minuti");
-        Servizi servizio2 = new Servizi("Massaggio", 3, 55.00, "1 ora");
+
+        Consumabili consumabile1 = new Consumabili("Actimel", 3, 2.00, "2024-12-02", BEVANDE);
+        Consumabili consumabile2 = new Consumabili("Focaccina", 6, 7.00, "2023-12-08", CIBO);
+        Oggetti oggetto5 = new Oggetti("Acido Muriatico(HCl)", 12, 15.0, "14 giorni", TOOL);
+        Consumabili consumabile3 = new Consumabili("Succo d'ananas", 4, 5.00, "2024-01-21", BEVANDE);
+
+        Servizi servizio1 = new Servizi("Massaggio corpo superiore", 3, 30.00, "30 minuti");
+        Servizi servizio2 = new Servizi("Massaggio completo", 3, 55.00, "1 ora");
+        Servizi servizio3 = new Servizi("Massaggio corpo inferiore", 1, 65.00, "1 ora");
+        
 
         List<Item> inventarioBrico = new ArrayList<>();
         inventarioBrico.add(oggetto1);
@@ -197,18 +237,21 @@ public class UIManager {
         List<Item> inventarioEsselunga = new ArrayList<>();
         inventarioEsselunga.add(consumabile1);
         inventarioEsselunga.add(consumabile2);
+        inventarioEsselunga.add(oggetto5);
+        inventarioEsselunga.add(consumabile3);
 
-        List<Item> inventarioMassaggi = new ArrayList<>();
-        inventarioMassaggi.add(servizio1);
-        inventarioMassaggi.add(servizio2);
+        List<Item> inventarioLetsRelax = new ArrayList<>();
+        inventarioLetsRelax.add(servizio1);
+        inventarioLetsRelax.add(servizio2);
+        inventarioLetsRelax.add(servizio3);
 
-        Negozio brico = new Negozio(inventarioBrico);
-        Negozio esselunga = new Negozio(inventarioEsselunga);
-        Negozio centroMassaggi = new Negozio(inventarioMassaggi);
+        Negozio brico = new Negozio("Brico", inventarioBrico);
+        Negozio esselunga = new Negozio("Esselunga", inventarioEsselunga);
+        Negozio letsRelax = new Negozio("LetsRelax", inventarioLetsRelax);
 
         listaNegozi.add(brico);
         listaNegozi.add(esselunga);
-        listaNegozi.add(centroMassaggi);
+        listaNegozi.add(letsRelax);
 
         String nome = menuCliente();
         Utente user = new Utente(nome);
@@ -232,11 +275,11 @@ public class UIManager {
                             System.err.println("Scelta negozio non valida, riprova!\n");
                         }
                     }
-
                     break;
 
                 case "2":
                     user.visualizzaDashboard();
+                    divisore();
                     break;
 
                 case "3":
@@ -255,21 +298,4 @@ public class UIManager {
             }
         } while (choice.equalsIgnoreCase("0") == false);
     }
-
-    // mostra il menu dei negozi e torna la scelta dell'utente
-    public static int menuNegozio(double credito) {
-        System.out.println("""
-
-                Data e ora: """ + data + "    " + ora + """
-
-
-                \033[34m             ---MENU NEGOZI---\033[0m
-                1)Brico     2)Esselunga     3)Centro massaggi
-                              0)Torna indietro
-
-                                Credito= """ + credito + """
-                """);
-        return askInputInt();
-    }
-
 }
