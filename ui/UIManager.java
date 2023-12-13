@@ -3,6 +3,7 @@ package ui;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
@@ -76,18 +77,42 @@ public class UIManager {
     }
 
     public static String askInput() {
-        System.out.print("-> "); // metodo che chiede un input di testo all'utente
-        return sc.nextLine();
+        while (true) {
+            System.out.print("-> ");
+            try {
+                return sc.nextLine();
+            } catch (Exception e) {
+                // Gestisci l'eccezione (puoi anche stampare un messaggio di errore)
+                System.out.println("Input non valido, riprova.");
+                sc.nextLine(); // Pulisci il buffer dell'input
+            }
+        }
     }
 
     public static int askInputInt() {
-        System.out.print("-> "); // metodo che chiede un input di un n intero all'utente
-        return sc.nextInt();
+        while (true) {
+            System.out.print("-> ");
+            try {
+                return sc.nextInt();
+            } catch (Exception e) {
+                // Gestisci l'eccezione (puoi anche stampare un messaggio di errore)
+                System.out.println("Input non valido, riprova.");
+                sc.nextLine(); // Pulisci il buffer dell'input
+            }
+        }
     }
 
     public static double askInputDouble() {
-        System.out.print("-> "); // metodo che chiede un input di un n intero all'utente
-        return sc.nextDouble();
+        while (true) {
+            System.out.print("-> ");
+            try {
+                return sc.nextDouble();
+            } catch (Exception e) {
+                // Gestisci l'eccezione (puoi anche stampare un messaggio di errore)
+                System.out.println("Input non valido, riprova.");
+                sc.nextLine(); // Pulisci il buffer dell'input
+            }
+        }
     }
 
     public static String menuCliente() {
@@ -176,11 +201,14 @@ public class UIManager {
         } else {
             System.err.println("\033[1m\nScelta oggetto non valida, riprova!\n\033[0m");
         }
+
         divisore();
-        timer.schedule(new TimerTask() {
-            public void run() {}
-        }, 1000);
-        
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // Gestisci l'eccezione se necessario
+            e.printStackTrace();
+        }  
     }
 
     // metodo per il calcolo della scadenza di un alimento
