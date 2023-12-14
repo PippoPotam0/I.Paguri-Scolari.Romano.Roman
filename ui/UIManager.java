@@ -124,18 +124,20 @@ public class UIManager {
     // mostra l'inventario di un negozio e consente all'utente di effettuare degli
     // acquisti
     public static void negozio(Utente user, int sceltaNegozio, List<Negozio> listaNegozi) {
+        int i = 0;
         Negozio negozioCorrente = getNegozio(sceltaNegozio, listaNegozi);
         if (negozioCorrente != null) {
             boolean continuaAcquisti = true;
             do {
                 System.out.println("Inventario di " + listaNegozi.get(sceltaNegozio-1).getNome());
                 for (Item item : negozioCorrente.getInventario()) {
+                    i++;
                     if (item instanceof Consumabili) {
                         Consumabili consumabile = (Consumabili) item;
                         String str = calcoloScadenza(consumabile.getScadenza(), data);
-                        System.out.println("\n" + consumabile.toString() + str);
+                        System.out.println("\n" + i + ") " + consumabile.toString() + str);
                     }else {
-                        System.out.println("\n" + item.toString());
+                        System.out.println("\n" + i + ") " + item.toString());
                     }
                 }
 
